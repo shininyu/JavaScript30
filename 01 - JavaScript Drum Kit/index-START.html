@@ -7,7 +7,6 @@
 </head>
 <body>
 
-
   <div class="keys">
     <div data-key="65" class="key">
       <kbd>A</kbd>
@@ -58,7 +57,30 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+window.addEventListener('keydown', function(e){
+  //$ variable 를 이용해 pressing 한 key 와 동일한 audio를 play
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+  //console.log("audio >> ", audio);
+  if(!audio) return; //stop fuction running all together
+  audio.currentTime = 0; // rewind to the start => reset audio
+  audio.play();
 
+  //transition 애니메이션
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+  //keycode 확인
+  //console.log("key >> ", key);
+  key.classList.add('playing');
+
+})
+function removeTransition(e){
+  if(e.propertyName !== 'transform') return;
+  //console.log(e.propertyName);
+  this.classList.remove('playing');
+}
+
+const keys = document.querySelectorAll('.key');
+//arrow function
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));
 </script>
 
 
