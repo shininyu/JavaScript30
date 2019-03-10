@@ -26,7 +26,6 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
-      display:flex;
     }
 
     .panel {
@@ -44,11 +43,6 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
-      flex: 1;
-      justify-content: center; 
-      align-items: center;
-      display: flex;
-      flex-direction: column;
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -62,19 +56,8 @@
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
-      flex: 1 0 auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
-    .panel > *:first-child {transform: translateY(-100%);}
-    .panel.open-active > *:first-child {transform: translateY(0);}
-
-    .panel > *:last-child {transform: translateY(100%);}
-    .panel.open-active > *:last-child {transform: translateY(0);}
-
-    
     .panel p {
       text-transform: uppercase;
       font-family: 'Amatic SC', cursive;
@@ -87,7 +70,6 @@
     }
 
     .panel.open {
-      flex: 5;
       font-size: 40px;
     }
 
@@ -123,26 +105,7 @@
   </div>
 
   <script>
-    const panels = document.querySelectorAll('.panel');
 
-    function toggleOpen(){
-      this.classList.toggle('open');
-    }
-
-    //includes() 메서드는 배열이 특정 요소를 포함하고 있는지 여부를 확인하고, 알맞게 true 또는 false를 반환합니다.
-    function toggleActive(e){
-      console.log(e.propertyName);
-      // flex-grow라는 propertyName을 갖는 브라우저도 있고 그냥 flex라고 하는 브라우저도 있기 때문에
-      if(e.propertyName.includes('flex')){
-        this.classList.toggle('open-active');
-      }
-    }
-
-
-    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
-
-    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
-    
   </script>
 
 

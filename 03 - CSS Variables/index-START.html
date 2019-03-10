@@ -10,54 +10,18 @@
   <div class="controls">
     <label for="spacing">Spacing:</label>
     <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
-    <br/>
-    <br/>
+
     <label for="blur">Blur:</label>
     <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
-    <br/>
-    <br/>
+
     <label for="base">Base Color</label>
-    <input id="base" type="color" name="base" value="#7FFFD4">
+    <input id="base" type="color" name="base" value="#ffc600">
   </div>
 
-  <img src="https://cdn.pixabay.com/photo/2017/04/22/00/14/universe-2250310_1280.jpg">
+  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
-    /*
-      구조적 가상 클래스 중 하나인 :root
-      (
-        only-child, nth-child, nth-last-child, frist-of-type, last-of-type, only-of-type, nth-of-type(n), nth-last-of-type(n), empty, first-child, last-child 들도 구조적 가상 클래스이다  
-      )
 
-      :root => 문서의 최상위 단계의 요소로 html에서 root요소는 항상 html 요소입니다. 
-      1. 하지만 스타일 적용 우선 순위에서 html 요소보다 root 가상 클래스가 더 우선시됩니다. ( 예, h1 {font-weight: normal;}보다 h1.title {font-weight:bold;}가 더 우선시 되어 h1.title이 스타일로 적용되는 것과 같은 것을 의미)
-    */
-
-    /*
-      --변수명: ~~;
-      는 css에서 사용하는 변수 정의 법이다.
-    */
-    :root {
-      --base:#7FFFD4;
-      --spacing: 10px;
-      --blur: 10px;
-    }
-
-    /*
-      최상위 단계의 구조적 가상클래스인 root에서 정의한 css 변수는 문서 내 어디서든 사용이 가능하다.
-
-      사용방법은 var(--변수명)과 같이 사용된다. 
-    */
-    img {
-      display: inline-block;
-      padding: var(--spacing);
-      background: var(--base);
-      filter: blur(var(--blur));
-    }
-
-    .hl {
-      color: var(--base);
-    }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -80,44 +44,7 @@
     }
   </style>
 
-  <script> 
-  /*
-    first of all, we should select all of the input on the page
-  */
-
-  /*
-    control class 내부의 모든 input을 선택
-    querySelectorAll retruns Array (nodeList)
-    difference between array and nodeList is...
-    array can use many kinds of useful method(ex. fill, filter, find, findIndex ... etc)
-    nodeList only can use entries, forEach, item, keys, length, value
-  */
-  const inputs = document.querySelectorAll('.controls input');
-
-  /*
-    htmlElement.dataset 속성은 HTML이나 DOM 요소의 커스텀 데이터 속성 (data-*)에 대한 읽기와 쓰기 접근을 허용합니다.
-    현재 선택한 요소의 data-* 속성은 sizing 하나뿐이어서 sizing만을 반환하지만, data-sizing뿐만 아닌 다른 data-* 속성이 있을 시 해당 속성 또한 함께 반환합니다. 
-  */
-  function handleUpdate(){
-    //console.log(this.dataset);
-
-    //바뀐 input의 값을 가져와서 css 변수를 바꿔 주어야 하는데, padding과 같은 속성은 값으로 숫자+px과 같은 단위를 설정해 주어야 하기 때문에 해당 input 요소에 px이라는 값을 가지고 있는 data-sizing을 가져와 함께 조합하여 반환해 주기 위해 suffix를 설정한다
-
-    // ||''를 추가한 이유는 색상 값에는 data-sizing이 없기 때문에 색상 설정 input을 선택했을 때 sizing 값이 없음으로써 undefined를 반환하지 않게 하기 위해서 ''를 설정해 주었음
-
-    const suffix = this.dataset.sizing || '';
-    //console.log(this.name);
-    document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
-  }
-
-  /*
-    change events fires for input, select, and textarea elements when an alteration to the element's value is committied by the users
-    => so that you can find out which input or select, textarea has changed by the users by using this event
-  */
-  inputs.forEach(input => input.addEventListener('change', handleUpdate));
-  inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
-
-  
+  <script>
   </script>
 
 </body>
