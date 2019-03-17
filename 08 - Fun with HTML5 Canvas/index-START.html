@@ -7,6 +7,81 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  const canvas = document.querySelector('#draw');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  //그리기 시작했을 때의 색상
+  ctx.strokeStyle = '#BADA55';
+  //코너 라인 모양 - MDN에 다양한 lineJoin 옵션들이 있음
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 100;
+  //blending 옵션을 줌
+  ctx.globalCompositeOperation = 'lighten';
+
+  //클릭 시에만 그림이 그려질 수 있도록 하는 flag 역할을 함
+  // 클릭 시 => true
+  // 클릭하지 않을 시 => false
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0;
+  let direction = true;
+
+  function draw(e){
+    if(!isDrawing) return; //stop the function from running when they are note moused down
+    console.log(e);
+
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    ctx.beginPath();
+    // where start from
+    ctx.moveTo(lastX, lastY);
+    // go to
+    // e.offetsetX, e.offsetY는 mousemove 이벤트 내의 속성
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    
+    //color 값에 변화를 주기 위함
+    hue++
+    //hue값이 360 이상일 경우 reset
+    if(hue >= 360){
+      hue = 0;
+    }
+     
+    // 라인의 굵기를 100을 최대로 한다
+    // 굵기가 100 이상일 경우 direction의 값을 반전한다
+    // 굵기가 10보다 이하일 경우에도 direction 값을 반전한다
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <= 20){
+      direction = !direction;
+    } 
+
+    // direction 값에 따라 라인의 굵기의 값을 +1을 하기도 하고 -1을 하기도 한다
+    // direction 과 lineWidth의 값은 서로 영향을 받아 변화한다
+    if(direction){
+      ctx.lineWidth++;
+    }else{
+      ctx.lineWidth--;
+    }
+
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+  });
+
+
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  //mousedown 상태로 윈도우 창 바깥으로 나갔을 때에 mouseout에 대한 flag 설정을 해 주지 않으면 다시 윈도우 안으로 들어왔을 때 mouseup 상태라고 해도 isDrawing은 윈도우 창을 나갈 때의 true를 그대로 가지고 있을 것이기 때문에
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+
 </script>
 
 <style>
