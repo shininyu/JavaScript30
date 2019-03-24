@@ -9,7 +9,7 @@
 
     html {
       font-family: sans-serif;
-      background: #ffc600;
+      background: #79E5CB;
     }
 
     .inbox {
@@ -37,6 +37,8 @@
 
     input[type="checkbox"] {
       margin: 20px;
+      width: 24px;
+      height: 24px;
     }
 
     p {
@@ -96,6 +98,43 @@
   </div>
 
 <script>
+  const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+
+  // 첫 번째 클릭된 요소에 대한 정보가 필요함
+  let lastChecked;
+
+
+  function handleCheck(e){
+    // check if they had the shift key down?
+    // & check that they are checking it
+    let inBetween = false;
+    
+    if(e.shiftKey && this.checked){
+      // go ahead and do hat we please
+      // loop over every single checkbox
+      checkboxes.forEach(checkbox => {
+        console.log(checkbox);
+        // 범위를 확인하기 위한 코드
+        // 클릭된 녀석이랑 해당 체크박스가 같거나
+        // 해당 체크박스가 마지막 체크된 녀석일 경우에는
+        // inBetween 값을 반대가 되도록 설정
+        // 첫 번재 클릭된 녀석과 shift를 누른 채 클릭된 녀석 사이의 범위를 알아로 수 있음
+        // inBetween은 플래그 역할을 한다. 처음 체크 박스가 클릭됐을 떄 inBetween이 true가 되고, 마지막 녀석이 클릭될 때 다시 false가 되는데 그 사이에 모든 체크박스에서는 inBetween 값이 true이므로 모두 체크되는 것이다
+        if(checkbox === this || checkbox === lastChecked){
+          inBetween = !inBetween;
+          console.log('starting to check them inbetween!');
+        }
+
+        if(inBetween) {
+          checkbox.checked = true;
+        }
+      })
+    }
+
+    lastChecked = e.target;
+  }
+
+  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
 </script>
 </body>
 </html>

@@ -8,8 +8,10 @@
 <body>
 
    <div class="player">
-     <video class="player__video viewer" src="652333414.mp4"></video>
-
+    <!--
+    <video class="player__video viewer" src="652333414.mp4"></video>
+    -->
+     <video class="player__video viewer" src="girls_girls_girls.mp4"></video> 
      <div class="player__controls">
        <div class="progress">
         <div class="progress__filled"></div>
@@ -17,11 +19,18 @@
        <button class="player__button toggle" title="Toggle Play">►</button>
        <input type="range" name="volume" class="player__slider" min="0" max="1" step="0.05" value="1">
        <input type="range" name="playbackRate" class="player__slider" min="0.5" max="2" step="0.1" value="1">
+       <!-- skip buttons -->
        <button data-skip="-10" class="player__button">« 10s</button>
        <button data-skip="25" class="player__button">25s »</button>
+       <button class="player__button fullscreen shown">full</button>
+       <button class="player__button screen">short</button>
      </div>
    </div>
 
+  <!--
+    <script src="scripts-FINISHED.js"></script>
+   -->
+   <!-- hide contorl, a button pause, skips, faster & slower -->
   <script src="scripts.js"></script>
 </body>
 </html>

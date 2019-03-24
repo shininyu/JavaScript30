@@ -11,35 +11,96 @@
   <script>
     const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
 
+    // break point에서 attribute modification을 활용하는 법
     function makeGreen() {
       const p = document.querySelector('p');
-      p.style.color = '#BADA55';
+      p.style.color = '#79E5CB';
       p.style.fontSize = '50px';
+      p.style.fontWeight = '600';
     }
 
+    /*
+      
+      console tricks
+
+    */
+
     // Regular
+    console.log("typical");
 
     // Interpolated
+    // %s 활용해서 값 넘겨받기
+    console.log('Hello I am a %s string!', '🐥🐣');
+    //ES6가 나온 뒤로는 `${변수}` 로 더 많이 사용하게 되었다고 함...
 
     // Styled
-
+    // console에 드러나는 텍스트에 스타일 입히기
+    // 텍스트 앞에 %c를 붙인 뒤, 뒤에 해당 텍스트에 입힐 폰트 스타일 정의
+    console.log('%cI am some great text', 'font-size: 28px; background:#000; color: #79E5CB');
+    
     // warning!
+    console.warn('warning! warning! 🤬');
 
-    // Error :|
+    // Error :
+    console.error('THIS IS AN ERROR 😂');
 
     // Info
+    console.info("일반적으로 항성의 열이 거의 미치지 않는 항성계 사이의 공간 온도는 영하 270도 정도[16]이다. 이는 온도가 낮은 물질들이 우주 어디서나 발견되는 우주배경복사에 의해 달궈지면서 열적 평형을 이루기 때문이다. 핵융합으로 에너지를 내놓는 별 주변은 아무것도 없는 성간 공간보다는 온도가 상대적으로 높다. 특히 은하 간 공간의 경우 성간 공간보다 더 온도가 높다.");
 
     // Testing
+    // it only fires when the statement is false
+    console.assert(1===2, '1 is not same with 2! you are wrong!');
+
+    // 무엇인가를 테스트 할 때 어떤 특정 상황에 대한 assert를 걸어 두면 상황의 결과에 따라 assert가 콘솔에 알려주게 됨 ---> 예시 상황은 모르겠음
+    const p = document.querySelector('p');
+    console.assert(p.classList.contains('ouch'), 'the element does not have a class');
 
     // clearing
+    // console에 표기 되는 모든 알림들을 지워줌
+    //console.clear();
+
 
     // Viewing DOM Elements
+    console.log(p);
+    // you can have more details about the object
+    console.dir(p);
+    
 
     // Grouping together
+    // 연관된 콘솔 알림끼리 그룹핑 시켜 준다 groupCollapsed() group() & groupEnd()
+    // groupCollapsed() 는 그룹핑된 모든 내용들을 닫은채로 콘솔에 알림을 띄워줌
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`);
+      console.log(`This is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.log(`${dog.name} is ${dog.age * 7} dog years old`);
+      console.groupEnd(`${dog.name}`);
+    })
 
     // counting
+    console.count('Kim');
+    console.count('Kim');
+    console.count('Lee');
+    console.count('Kim');
+    console.count('Kim');
+    console.count('Kim');
+    console.count('Kim');
+
+    console.count('Lee');
 
     // timing
+    // you can see how many time it takes => it can be a function
+    console.time('fetching data');
+    fetch('https://api.nasa.gov/planetary/apod?api_key=NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo')
+    .then(data => data.json())
+    .then(data => {
+      console.timeEnd('fetching data')
+      console.log(data);
+    });
+
+    //console.table()
+    console.table(dogs);
+
 
   </script>
 </body>
