@@ -5,8 +5,29 @@
   <title>Key Detection</title>
   <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 </head>
+
 <body>
 <script>
+
+  const pressed = [];
+  const secretCode = 'thanks';
+
+  // check the key that user pressed
+  window.addEventListener('keyup', (e) => {
+    console.log(e.key);
+  //push the keys that user has pressed into array
+    pressed.push(e.key);
+    //.splice()는 배열에서 특정 범위의 값들을 추출하고, 그 자리에 새로운 값을 넣습니다.
+    // array.splice( start, count, value1, value2, ... )
+    // 예를 들어 jbAry.splice( 1, 2, 'abc', 'def' )는 jbAry  배열의 두번째 값부터 2개를 추출하고, 그 자리에 abc, def 두 값을 넣습니다.
+    pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length);
+    if(pressed.join('').includes(secretCode)){
+      console.log('found secret code!');
+      cornify_add();
+    }
+    console.log("pressed array >>> ", pressed);
+  });
+
 </script>
 </body>
 </html>

@@ -6,6 +6,7 @@
 </head>
 <body>
 
+  
   <div class="site-wrap">
 
     <h1>Slide in on Scroll</h1>
@@ -43,6 +44,13 @@
   </div>
 
   <script>
+    // iamge 포지션이 안쪽으로 들어오고 opacity가 1인 경우는
+    // slide-in 클래스에 active 클래스를 추가해 주면 됨
+
+    // debouncing animation
+    // 20 milliseconds 넘었을 때 설정해 놓은 함수를 실행 시켜 줌
+    // 그냥 scroll 이벤트를 걸었을 경우에는 스크롤 할 때마다 이벤트가 실행되면서 어플리케이션에 무리가 올 수 있음
+    // 조금의 컨트롤을 줄 수 있음
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -57,6 +65,41 @@
         if (callNow) func.apply(context, args);
       };
     }
+    
+    // 1. select all images on the page
+    const sliderImages = document.querySelectorAll('.slide-in'); 
+
+    // 2. create a function which would run when everytime the user scrolls
+    function checkSlide(e){
+      //슬라이드 이미지가 show in 될 포인트를 잡아준다
+      //console.log("페이지 top >>",window.scrollY);
+      sliderImages.forEach(sliderImages => {
+        // 현재 페이지의 bottom의 위치를 파악해 줌
+        const windowBottom = (window.scrollY + window.innerHeight);
+        // 슬라이드 이미지의 반 정도를 지났을 때 슬라이드 되도록 설정 (수치는 바꿀 수 있음) 
+        const slideInAt = windowBottom - sliderImages.height / 2;
+        //console.log("슬라이드 at >>", slideInAt);
+        const imageBottom = sliderImages.offsetTop + sliderImages.height;
+        
+        const isHalfShown = slideInAt > sliderImages.offsetTop;
+
+        const isNotScrolledPast = window.scrollY < imageBottom;
+        
+        if(isHalfShown && isNotScrolledPast){
+         sliderImages.classList.add("active"); 
+        }else{
+          sliderImages.classList.remove("active"); 
+        }
+
+      });
+    }
+    // 2-1. trigger the function to scroll event
+    // debounce를 사용하지 않았을 때 => 위에서 아래까지 약 58번
+    // debounce를 사용했을 때 => 위에서 아래까지 약 8번
+    window.addEventListener('scroll', debounce(checkSlide));
+    // 두 번째 인자로 설정하고 싶은 시간을  넣어서 넘겨 주면 해당 시간을 기준으로 이벤트를 실행 시켜 줌
+    //window.addEventListener('scroll', debounce(checkSlide, 500));
+
 
   </script>
 
