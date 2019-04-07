@@ -19,16 +19,124 @@
     <ul class="plates">
       <li>Loading Tapas...</li>
     </ul>
-    <form class="add-items">
+    <form class="add-items"  autocomplete="off">
       <input type="text" name="item" placeholder="Item Name" required>
-      <input type="submit" value="+ Add Item">
+      <input type="submit" value="+ Adds Item">
+      <input class="btn checkAll"  type="button" value="Check All">
+      <input class="btn uncheckAll" type="button" value="Uncheck All">
+      <input class="btn deleteAll"  type="button" value="Delete All">
     </form>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  // if localStorage.items is empty, it would return an empty array = [] 
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+
+  // add data for the list
+  function addItem(e){
+    // submit event automatically refresh the page
+    // so that we gotta prevent refreshing the page
+    e.preventDefault();
+    const text = document.querySelector('.add-items input[type="text"]').value;
+    const item = {
+      // es6 문법
+      text,
+      done: false,
+    }
+    //console.log(item);
+    items.push(item);
+    populateList(items, itemsList);
+
+     //local storage (application tab => local storage )
+    // setItem, getItem, removeItem
+    // you may use only string in local storage
+    // JSON.stringify();
+    localStorage.setItem('items', JSON.stringify(items));
+
+    // if you want to see the localStorage Items in an array you should use JSON.parse(localStorage.getItem(key));
+    //console.log('current localStorage >>', JSON.parse(localStorage.getItem('items')));
+
+    // textbox blank
+    e.target.reset();
+  };
+
+  function populateList(plates = [], platesList){
+    platesList.innerHTML = plates.map((plate, i) => {
+      // if there is anything in the checked property of value, it considers as a checked one even if you put false value
+      return `
+        <li>
+          <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked': ''}/>
+          <label for="item${i}">${plate.text}<label>
+        </li>
+      `;
+    }).join('');
+    // join('') 역할은 리턴값을 하나의 긴 string으로 변환 시켜준다
+  }
+
+  // check the checkbox to be checked or not
+  // update check status
+  function toggleDone(e){
+    //skip this unless it's an input
+    //matches() => 일치하는지 여부
+    if(!e.target.matches('input')) return;
+    const el = e.target;
+    //console.log(el.dataset.index);
+    const index = el.dataset.index;
+    items[index].done = !items[index].done;
+    localStorage.setItem('items', JSON.stringify(items));
+
+  }
+  
+  function deleteAll(){
+    if(!JSON.parse(localStorage.getItem('items'))) return;
+    const checking = confirm('모두 삭제하시겠습니까?');
+    if(checking){
+      localStorage.removeItem('items');
+      itemsList.innerHTML = '';
+    } 
+  }
+
+  function uncheckAll(){
+    if(!JSON.parse(localStorage.getItem('items'))) return;
+  
+    //set list
+    items.forEach((v)=>{
+      v.done = false;
+    })
+    populateList(items, itemsList);
+    localStorage.setItem('items', JSON.stringify(items));
+
+  }
+
+  function checkAll(){
+    if(!JSON.parse(localStorage.getItem('items'))) return;
+    // set list
+    items.forEach((v)=>{
+      v.done = true;
+    })
+    populateList(items, itemsList);
+    localStorage.setItem('items', JSON.stringify(items));
+  }
+
+  // list add
+  addItems.addEventListener('submit', addItem);
+  itemsList.addEventListener('click', toggleDone);
+
+  // check localStorage and if there is a data, show on the list
+  populateList(items, itemsList);
+
+  // clear all
+  const deleteBtn = document.querySelector('.deleteAll');
+  deleteBtn.addEventListener('click', deleteAll);
+  // uncheck all
+  const uncheckBtn = document.querySelector('.uncheckAll');
+  uncheckBtn.addEventListener('click', uncheckAll);
+
+  //check all
+  const checkBtn = document.querySelector('.checkAll');
+  checkBtn.addEventListener('click', checkAll);
 
 </script>
 

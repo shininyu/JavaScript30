@@ -77,3 +77,11 @@ h2 {
   outline: 0;
   border: 1px solid rgba(0,0,0,0.1);
 }
+
+.add-items input[type="button"],
+.add-items input[type="submit"]{
+  cursor: pointer;
+}
+.add-items .btn {
+  margin-top: 8px;
+}

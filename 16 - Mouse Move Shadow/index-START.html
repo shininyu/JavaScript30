@@ -29,12 +29,42 @@
   }
 
   h1 {
-    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    text-shadow: 10px 10px 0 rgba(0,0,0,0.1);
     font-size: 100px;
   }
   </style>
 
 <script>
+  // we are gonna listen for the mouse event
+
+  const hero = document.querySelector('.hero');
+  const text = hero.querySelector('h1');
+  // higher number shows you more dynamic shape of shadow
+  const walk = 100; //100px
+  function shadow(e){
+    //const width = hero.offsetWidth;
+    //const height = hero.offsetHeight;
+    const {offsetWidth: width, offsetHeight: height} = hero;
+    let { offsetX: x, offsetY: y } = e;
+
+    //console.log(this, e.target);
+    if(this !== e.target) {
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+    const xWalk = Math.round((x / width * walk) - (walk / 2));
+    const yWalk = Math.round((y / height * walk) - (walk / 2));
+    
+    text.style.textShadow = `
+    ${xWalk}px ${yWalk}px 0 rgba(0,0,0,0.1),
+    ${xWalk * -1}px ${yWalk}px 0 rgba(0,0,0,0.2),
+    ${yWalk}px ${xWalk * -1}px 0 rgba(0,255,200,0.4),
+    ${yWalk * -1}px ${xWalk}px 0 rgba(0,255,200,0.8)
+    `;
+
+  }
+  hero.addEventListener('mousemove', shadow);
+
 </script>
 </body>
 </html>
