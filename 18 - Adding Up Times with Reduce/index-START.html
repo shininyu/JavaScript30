@@ -182,6 +182,37 @@
     </li>
   </ul>
 <script>
+  // spread into an new array
+    const timeNodes = [...document.querySelectorAll('[data-time]')];
+
+  // or you can run an array.from 
+  const timeNode = Array.from(document.querySelectorAll('[data-time]'));
+ 
+    //console.log(timeNodes);
+
+    // map doesn't work with timeNode
+    // why? => nodeList doesn't work with map
+    // so if we want to use map method we should turn nodeList into an array 
+    const seconds = timeNode
+    .map(node => node.dataset.time)
+    .map(timeCode => {
+      // :기준으로 나누어서 첫 번째는 min으로 두 번째는 secs로 설정
+      const [mins, secs] = timeCode.split(':').map(parseFloat); 
+      //parseFloat는 문자열을 숫자로 바꾸는 함수
+      return(mins * 60) + secs;
+      console.log(mins, secs);
+    })
+    .reduce((total, vidSeconds) => total + vidSeconds);
+
+    let secondsLeft = seconds;
+
+    const hours = Math.floor(secondsLeft / 3600);
+    secondsLeft = secondsLeft % 3600;
+
+    const mins = Math.floor(secondsLeft / 60);
+    secondsLeft = secondsLeft % 60;
+
+    console.log(hours, mins, secondsLeft);
 </script>
 </body>
 </html>
