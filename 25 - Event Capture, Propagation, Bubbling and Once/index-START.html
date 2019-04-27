@@ -38,10 +38,47 @@
   .three {
     background: coral;
   }
+  button {
+    margin-top: 30px;
+    width: 500px;
+    height: 30px;
+    background-color: blue;
+    color: white;
+  }
 </style>
 
-<button></button>
+<button>클릭해 보세여</button>
 <script>
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+  function logText(e){
+    console.log(this.classList.value);
+    //이벤트 버블링 방지
+    // e.stopPropagation();
+  }
+
+  // bubbling 예방?
+  divs.forEach(div => div.addEventListener('click', logText, {
+    // default value is false
+    // 캡처 옵션은 이벤트가 bottom 부터 top으로 올라가는 자바스크립트의 특성을
+    // top부터 bottom으로 내려가도록 설정해 주는 옵션이다
+    // capture를 true로 설정할 경우, 가장 높은 body에서부터 그 아래 요소들로 이벤트가 전달되어 실행되게 된다
+    // 그렇기 때문에 one에서 ~ three까지 콘솔에 찍히게 되는 것이다
+    capture: false,
+    // unbinding itself
+    // 이벤트가 처음 한 번만 바인딩되고 그 뒤로는 스스로 바인딩을 제거해 줌
+    // 이벤트를 트리거 한 요소에 설정한 이벤트가 맨 처음 한 번 발생한 이후에는
+    // 설정한 이벤트가 또 발생하더라도 실행하지 않게 해 줌 처음 딱 한 번만 실행됩니다
+    once: true
+  }));
+
+  button.addEventListener('click', () => {
+    console.log('한 번만 작동될 거예유');
+    button.style.backgroundColor = 'gray';
+    button.innerText = '클릭됨요';
+  }, {
+    once: true,
+  });
 
 </script>
 </body>
