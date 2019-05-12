@@ -7,6 +7,7 @@
 <body>
   <h2>Cool</h2>
   <nav class="top">
+    <!-- 마우스가 움직일 때 보여지는 하얀 부분 -->
     <div class="dropdownBackground">
       <span class="arrow"></span>
     </div>
@@ -220,17 +221,27 @@
 </style>
 
 <script>
+  //트리거 => 큰 메뉴
   const triggers = document.querySelectorAll('.cool > li');
+  // 마우스를 움직일 때 보여지는 하얀 배경
   const background  = document.querySelector('.dropdownBackground');
+  // 모든 메뉴를 포함한 전체
   const nav  = document.querySelector('.top');
 
-
+  /*
+    이벤트에 따른 필요한 클래스를 추가하고 제거하면서 애니메이션 효과를 주고 있음
+    
+  */
+  // 마우스가 큰 메뉴에 들어올 때
   function handleEnter() {
+    // trigger-enter => display block
     this.classList.add('trigger-enter');
+    // 화살표함수가 아닌 일반 function을 사용할 경우 this는 window를 가리키게 되기 때문에 에러가 발생됨
     setTimeout(() => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
-
+    // 하얀 배경 display block
     background.classList.add('open');
-
+    
+    // 각 메뉴마다 다른 dropdown이 있기 때문에 상단에서 변수 선언하기 보다 이벤트가 발생할 때 선언하는 것
     const dropdown = this.querySelector('.dropdown');
     //get​Bounding​Client​Rect()
     //요소의 크기와 요소의 viewport에서의 상대적인 위치를 반환
@@ -248,7 +259,7 @@
     background.style.setProperty('height', `${coords.height}px`);
     background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px)`);
   }
-
+// 마우스가 큰 메뉴에서 벗어날 때
   function handleLeave() {
     this.classList.remove('trigger-enter', 'trigger-enter-active');
 

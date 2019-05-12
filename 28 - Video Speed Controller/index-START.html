@@ -8,13 +8,75 @@
 <body>
 
   <div class="wrapper">
-    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
+    <video class="flex" width="765" height="430" src="../11 - Custom Video Player/girls_girls_girls.mp4" loop controls></video>
     <div class="speed">
-      <div class="speed-bar">1×</div>
+      <div class="speed-bar">1.0×</div>
     </div>
+  </div>
+  <div class="btn_group">
+      <button class="btn_normal">1.0x</button>
+      <button class="btn_twice">2.0x</button>
   </div>
 
 <script>
+    const speed = document.querySelector('.speed');
+    const bar = speed.querySelector('.speed-bar');
+    const video = document.querySelector('.flex');
+
+    let isDown = false;
+    speed.addEventListener('mousedown', (e) => {
+      isDown = true;
+      speed.classList.add('active');
+    });
+    speed.addEventListener('mouseleave', () => {
+      isDown = false;
+      speed.classList.remove('active');
+    });
+    speed.addEventListener('mouseup', () => {
+      isDown = false;
+      speed.classList.remove('active');
+    });
+
+    function handleMove(e){
+      if(!isDown) return;
+      e.preventDefault(); 
+      // console.log(e);
+      const y = e.pageY - this.offsetTop;
+      // console.log(y);
+      const percent = y / this.offsetHeight;
+      const min = 0.4;
+      const max = 4;
+      const height = Math.round(percent * 100) + '%';
+      //console.log(height);
+      const playbackRate = percent * (max - min) + min;
+
+      bar.style.height = height;
+      bar.textContent = playbackRate.toFixed(1) + '×';
+
+      // playbackRate라는 속성은 비디오 재생 속도를 설정 가능하도록 한다
+      // normal speed는 1.0
+      video.playbackRate = playbackRate;
+    }
+    speed.addEventListener('mousemove', handleMove);
+    
+    function normalVideoPlayBackRate(){
+      video.playbackRate = 1.0
+      bar.style.height = 16.3 + '%'
+      bar.textContent = '1.0×';
+    }
+
+    function twiceVideoPlayBackRate(){
+      video.playbackRate = 2.0
+      bar.style.height = 45 + '%';
+      bar.textContent = '2.0×';
+    }
+    
+    const normalBtn = document.querySelector('.btn_normal');
+    const twiceBtn = document.querySelector('.btn_twice');
+    normalBtn.addEventListener('click', normalVideoPlayBackRate.bind(this));
+    twiceBtn.addEventListener('click', twiceVideoPlayBackRate.bind(this));
+
+    
 </script>
 </body>
 </html>

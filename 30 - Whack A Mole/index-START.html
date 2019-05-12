@@ -37,6 +37,65 @@
   const scoreBoard = document.querySelector('.score');
   const moles = document.querySelectorAll('.mole');
 
+  let lastHole;
+
+  let timeUp = false;
+
+  let score;
+  function randomTime(min, max){
+    return Math.round(Math.random() * (max - min) + min);
+  }
+
+  function randomHole(holes){
+    //console.log(holes.length);
+    const idx = Math.floor(Math.random() * holes.length);
+    const hole = holes[idx];
+
+    if(hole === lastHole){
+      console.log('Ah nah thats the same one bud');
+      return randomHole(holes);
+    }
+    //åconsole.log(hole);
+
+    // 현재 나온 두더지가 다음 두더지가 되지 않도록 설정하는 flag 역할을 함
+    lastHole = hole;
+    return hole;
+  }
+
+  // 두더지 캐릭터가 위로 튀어나옴
+  function peep(){
+    // randomTime(50, 500); 일 경우 매우 빨라짐
+    // 여러 가지 레벨을 생성해서도 사용 가능
+    const time = randomTime(200, 1000);
+    const hole = randomHole(holes);
+    hole.classList.add('up');
+    setTimeout(()=>{
+      hole.classList.remove('up');
+      if(!timeUp) peep();
+    }, time);
+  }
+
+
+  function startGame(){
+    scoreBoard.textContent = 0;
+    timeUp = false;
+    score = 0;
+    peep();
+    setTimeout(()=> timeUp = true, 10000)
+  }
+
+
+  function bank(e){
+    //isTrusted 는 이벤트가 사용자 행위에 의하여 발생되었으면 true를 리턴
+    // 이벤트가 스크립트로 인해 생성 또는 수정되었거나 dispatchEvent를 통해 보내졌으면 false를 리턴
+    if(!e.isTrusted) return; // 사용자의 클릭 이벤트로만 발생될 수 있도록 설정
+
+    score++;
+    this.classList.remove('up');
+    scoreBoard.textContent = score; 
+  }
+
+  moles.forEach(mole => mole.addEventListener('click', bank));
 </script>
 </body>
 </html>
